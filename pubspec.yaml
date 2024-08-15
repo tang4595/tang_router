@@ -1,6 +1,6 @@
 name: tang_router
 description: "The URL Router util implements on the Flutter platform."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/tang4595/tang_router.git
 repository: https://github.com/tang4595/tang_router
 issue_tracker: https://github.com/tang4595/tang_router/issues
