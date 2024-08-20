@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:tang_router/tang_router_invoke.dart';
 
 /// The main route entity wrapper.
 class TRoute extends GoRoute {
@@ -30,11 +31,29 @@ class TRoute extends GoRoute {
 /// Register implements of the every single routes.
 abstract class TRouterRegister {
 
+  /** Required. */
+
   /// The name of module.
   String get moduleName;
 
+  /// The page router definition.
+  List<TRoute> register();
+
+  /** Optional. */
+
+  /// The method invokes.
+  TRouterInvokeRegister? get invokes => null;
+
+  /// The root page that mapped to the path named `/`.
+  /// The [moduleName] will be ignore if [isRoot] set to `true`. default is
+  /// `false`.
+  bool get isRoot => false;
+
   /// The final module name.
-  String get finalModuleName => moduleName.isEmpty ? '' : '/$moduleName';
+  String get finalModuleName {
+    if (isRoot) return '';
+    return moduleName.isEmpty ? '' : '/$moduleName';
+  }
 
   /// Appending the final route path with the given [path] name.
   String getPath(String path) =>
@@ -45,7 +64,4 @@ abstract class TRouterRegister {
       '$finalModuleName-${path.contains('/')
           ? path.replaceFirst('/', '')
           : path}';
-
-  /// The router definition.
-  List<TRoute> register();
 }

@@ -1,5 +1,7 @@
 import 'package:example/example_page.dart';
+import 'package:example/invoke_register.dart';
 import 'package:tang_router/tang_router.dart';
+import 'package:tang_router/tang_router_invoke.dart';
 
 class RouterRegisterRoot extends TRouterRegister {
   @override
@@ -47,6 +49,9 @@ class RouterRegisterA extends TRouterRegister {
       ),
     ];
   }
+
+  @override
+  TRouterInvokeRegister? get invokes => InvokeRegister();
 }
 
 class RouterRegisterB extends TRouterRegister {
@@ -79,4 +84,7 @@ class RouterRegisterB extends TRouterRegister {
       ),
     ];
   }
+
+  @override
+  TRouterInvokeRegister? get invokes => InvokeRegister();
 }

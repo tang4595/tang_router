@@ -3,7 +3,9 @@ library tang_router;
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tang_router/tang_router_invoke.dart';
 import 'package:tang_router/tang_router_register.dart';
 
 export 'package:go_router/go_router.dart';
@@ -27,8 +29,15 @@ class TRouter {
   /// All routes list.
   final List<TRoute> _routes = [];
 
-  /// Static util wrappers.
-  /// Directly invoke the [shared] instance's methods with the same parameters.
+  /// All method-invokes list.
+  /// Key: 'moduleName:methodName'.
+  /// Value: 'TRouterInvoke'.
+  final Map<String, TRouterInvoke> _invokes = {};
+
+  /**
+   * Static util wrappers.
+   * Directly invoke the [shared] instance's methods with the same parameters.
+   */
 
   /// Referring to the comments in the [GoRouter] file.
   static bool get canPop => TRouter.shared._router.routerDelegate.canPop();
@@ -138,6 +147,23 @@ class TRouter {
 
   /// Referring to the comments in the [GoRouter] file.
   static void dispose() => TRouter.shared._router.dispose();
+
+  /**
+   * Method invokes.
+   * Directly invoke the [shared] instance's methods with the same parameters.
+   * */
+
+  /// Invoking the method and returning a value. the parameter and values can
+  /// be null.
+  /// The [moduleName] and [methodName] is required.
+  static Future<dynamic>? invoke(String moduleName, String methodName, {
+    Map<String, dynamic>? params,
+  }) {
+    final key = TRouter.shared.assembleInvokesKey(moduleName, methodName);
+    final targetInvoke = TRouter.shared._invokes[key];
+    if (targetInvoke == null) return null;
+    return targetInvoke.invoke(params);
+  }
 }
 
 // Getter
@@ -146,6 +172,7 @@ extension Getters on TRouter {
 
   GoRouter get router => _router;
   List<TRoute> get routes => _routes;
+  Map<String, TRouterInvoke> get invokes => _invokes;
 }
 
 // Public

@@ -1,4 +1,5 @@
 import 'package:example/router_register.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tang_router/tang_router.dart';
 
@@ -66,6 +67,48 @@ class _ExamplePageState extends State<ExamplePage> {
               onTap: () =>
                   TRouter.push(RouterRegisterB().getPath('/detail')),
               child: const Text('B-detail'),
+            ),
+
+            const SizedBox(height: 80.0),
+            InkWell(
+              onTap: () async {
+                if (kDebugMode) {
+                  print(await TRouter.invoke('businessA', 'testMethodA',
+                    params: {'a': 1},
+                  ));
+                }
+              },
+              child: const Text('Invoke Business-A：Method-A'),
+            ),
+            InkWell(
+              onTap: () async {
+                if (kDebugMode) {
+                  print(await TRouter.invoke('businessA', 'testMethodB',
+                    params: {'b': 1},
+                  ));
+                }
+              },
+              child: const Text('Invoke Business-A：Method-B'),
+            ),
+            InkWell(
+              onTap: () async {
+                if (kDebugMode) {
+                  print(await TRouter.invoke('businessB', 'testMethodA',
+                    params: {'c': 1},
+                  ));
+                }
+              },
+              child: const Text('Invoke Business-B：Method-A'),
+            ),
+            InkWell(
+              onTap: () async {
+                if (kDebugMode) {
+                  print(await TRouter.invoke('businessB', 'testMethodB',
+                    params: {'d': 1},
+                  ));
+                }
+              },
+              child: const Text('Invoke Business-B：Method-B'),
             ),
           ],
         ),
