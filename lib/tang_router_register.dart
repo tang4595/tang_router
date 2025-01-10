@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+import 'package:tang_router/tang_router.dart';
 import 'package:tang_router/tang_router_invoke.dart';
 
 /// The main route entity wrapper.
@@ -13,18 +13,45 @@ class TRoute extends GoRoute {
   /// The route name (Optional), default is generate with [TRouterRegister].
   final String? routeName;
 
+  /// If [requiredLogin] is set to true, the [redirect] method will be
+  /// overridden and redirect to the LoginRoute if needed. if [customRedirect]
+  /// is implemented, it will be ignored.
+  final bool? requiredLogin;
+
+  /// The custom implementation of [redirect].
+  final GoRouterRedirect? customRedirect;
+
   TRoute(this.routerRegister, {
     required this.routePath,
     this.routeName,
+    this.requiredLogin,
+    this.customRedirect,
     super.builder,
     super.pageBuilder,
     super.parentNavigatorKey,
-    super.redirect,
     super.onExit,
     super.routes,
   }) : super(
     path: routerRegister.getPath(routePath),
     name: routeName ?? routerRegister.getName(routePath),
+    redirect: (context, state) {
+      if (customRedirect != null) return customRedirect(context, state);
+      if (!(requiredLogin ?? false)) return null;
+
+      final loginPage = TRouter.shared.loginPlugin?.loginRoutePath ?? '';
+      if (loginPage.isNotEmpty) {
+        /// Status checking.
+        final isLogin = TRouter.shared.loginPlugin?.isLogin ?? false;
+        final destination = isLogin ? null : loginPage;
+
+        /// Redirecting callback.
+        if (destination != null) {
+          TRouter.shared.loginPlugin?.didRedirected(destination);
+        }
+        return destination;
+      }
+      return null;
+    },
   );
 }
 

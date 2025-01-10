@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tang_router/tang_router_invoke.dart';
+import 'package:tang_router/tang_router_plugin.dart';
 import 'package:tang_router/tang_router_register.dart';
 
 export 'package:go_router/go_router.dart';
 export 'package:tang_router/tang_router_register.dart';
+export 'package:tang_router/tang_router_plugin.dart';
 
 part 'tang_router_util.dart';
 
@@ -33,6 +35,9 @@ class TRouter {
   /// Key: 'moduleName:methodName'.
   /// Value: 'TRouterInvoke'.
   final Map<String, TRouterInvoke> _invokes = {};
+
+  /// The plugin of User Login.
+  TRouterLoginPlugin? _loginPlugin;
 
   /**
    * Static util wrappers.
@@ -173,6 +178,7 @@ extension Getters on TRouter {
   GoRouter get router => _router;
   List<TRoute> get routes => _routes;
   Map<String, TRouterInvoke> get invokes => _invokes;
+  TRouterLoginPlugin? get loginPlugin => _loginPlugin;
 }
 
 // Public
@@ -197,9 +203,11 @@ extension Public on TRouter {
     GlobalKey<NavigatorState>? navigatorKey,
     String? restorationScopeId,
     bool requestFocus = true,
+    TRouterLoginPlugin? loginPlugin,
   }) async {
     if (_isRegisterCompleted || _routes.isEmpty) return false;
     _isRegisterCompleted = true;
+    _loginPlugin = loginPlugin;
     _router = GoRouter(
       routes: _routes,
       extraCodec: extraCodec,

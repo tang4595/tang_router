@@ -1,9 +1,9 @@
+import 'package:example/router_plugin.dart';
 import 'package:example/router_register.dart';
 import 'package:flutter/material.dart';
 import 'package:tang_router/tang_router.dart';
 
 void main() {
-  _setupRouter();
   runApp(const MyApp());
 }
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: TRouter.shared.router,
+      routerConfig: _setupRouter(),
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-_setupRouter() {
+GoRouter _setupRouter() {
   /// Root page.
   TRouter.shared.register(RouterRegisterRoot());
 
@@ -31,8 +31,12 @@ _setupRouter() {
   TRouter.shared.batchRegister([
     RouterRegisterA(),
     RouterRegisterB(),
+    RouterRegisterUser(),
   ]);
 
   /// Completing setup.
-  TRouter.shared.setup();
+  TRouter.shared.setup(
+    loginPlugin: RouterLoginPlugin(),
+  );
+  return TRouter.shared.router;
 }

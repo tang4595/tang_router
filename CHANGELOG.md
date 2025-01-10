@@ -1,3 +1,7 @@
+## 0.0.4
+
+*  Supported login redirection.
+
 ## 0.0.3
 
 * Supported the method-invoke interaction.

@@ -19,6 +19,35 @@ class RouterRegisterRoot extends TRouterRegister {
   ];
 }
 
+/// User
+class RouterRegisterUser extends TRouterRegister {
+  @override
+  String get moduleName => 'user';
+
+  @override
+  List<TRoute> register() {
+    return [
+      TRoute(
+        this,
+        routePath: '/login',
+        builder: (context, state) {
+          return ExamplePage(value: getName('/login'));
+        },
+      ),
+
+      TRoute(
+        this,
+        routePath: '/info',
+        requiredLogin: true,
+        builder: (context, state) {
+          return ExamplePage(value: getName('/info'));
+        },
+      ),
+    ];
+  }
+}
+
+/// Example A
 class RouterRegisterA extends TRouterRegister {
   @override
   String get moduleName => 'businessA';
@@ -54,6 +83,7 @@ class RouterRegisterA extends TRouterRegister {
   TRouterInvokeRegister? get invokes => InvokeRegister();
 }
 
+/// Example B
 class RouterRegisterB extends TRouterRegister {
   @override
   String get moduleName => 'businessB';

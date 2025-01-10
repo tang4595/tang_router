@@ -33,6 +33,7 @@ class _ExamplePageState extends State<ExamplePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
 
+            /// Pages.
             InkWell(
               onTap: () =>
                   TRouter.push(RouterRegisterA().getPath('/home')),
@@ -69,6 +70,13 @@ class _ExamplePageState extends State<ExamplePage> {
               child: const Text('B-detail'),
             ),
 
+            InkWell(
+              onTap: () =>
+                  TRouter.push(RouterRegisterUser().getPath('/info')),
+              child: const Text('User-Login-Test(/user/info)'),
+            ),
+
+            /// Invokes.
             const SizedBox(height: 80.0),
             InkWell(
               onTap: () async {
